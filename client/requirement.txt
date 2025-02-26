@@ -1,0 +1,9 @@
+npm create vite@latest my-react-app --template
+npm install -g npm@11.1.0
+cd frontend
+npm install
+
+
+npm install -D tailwindcss@3 postcss autoprefixer
+npx tailwindcss init -p
+
