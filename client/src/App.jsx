@@ -1,9 +1,9 @@
 import React from "react";
-
+import HomePage from "./HomePage";
 function App() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline">hi iam mathav</h1>
+      <HomePage></HomePage>
     </>
   );
 }
