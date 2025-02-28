@@ -5,7 +5,19 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        agri: ["'Cormorant Garamond'", "serif"],  // Branding font
+        ledger: ["'Ledger'", "serif"],  // Navbar font
+        petrona: ["'Petrona'", "serif"], 
+        merriweather: ["'Merriweather'", "serif"], 
+        italianno: ["'Italianno'", "cursive"],
+        odor: ["'Odor Mean Chey'", "sans-serif"], 
+        libre: ["'Libre Caslon Display'", "serif"], // New font added
+        gowun: ['"Gowun Batang"', 'serif'],
+        cormorant: ['"Cormorant"', 'serif'],
+      },
+    },
   },
   plugins: [],
-}
+};
