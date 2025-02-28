@@ -2,7 +2,7 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <nav className="bg-green-600 text-white flex justify-between items-center px-10 py-3 text-lg ">
+    <nav className="bg-green-600 text-white flex justify-between items-center px-10 py-4 text-lg ">
       {/* Left Side: Contact Info */}
       <div className="flex gap-10 text-2xl font-ledger ">
         <span>📞 Phone</span>

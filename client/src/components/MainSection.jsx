@@ -26,7 +26,7 @@ const MainSection = () => {
   return (
     <>
       {/* Full-Screen Image Slider */}
-      <div className="w-screen h-screen overflow-hidden">
+      <div className="w-screen h-screen overflow-hidden ">
         <Slider {...sliderSettings}>
           {images.map((src, index) => (
             <div key={index} className="w-screen h-screen">
@@ -48,7 +48,7 @@ const MainSection = () => {
             Welcome to AGRI Machinery
           </h2>
           <p className="text-xl italic mt-4 font-lg font-semibold">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Your Trusted Partner in Agricultural Machinery!
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Your Trusted Partner in Agricultural Machinery!
           </p>
           <p className="mt-8 text-gray-700 text-2xl font-libre">
             We are committed to providing high-quality, reliable, and efficient
@@ -77,7 +77,7 @@ const MainSection = () => {
       </div>
 
       {/* About Us Section (Below Quote) */}
-      <div className="flex flex-col md:flex-row-reverse items-center justify-between p-32 gap-12">
+      <div className="flex flex-col md:flex-row-reverse items-center justify-between p-24 gap-12">
         {/* Right: Text Content */}
         <div className="md:w-1/2 text-left">
           <h2 className="text-5xl font-bold text-green-700 font-noto">
