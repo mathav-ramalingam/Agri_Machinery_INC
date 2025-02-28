@@ -13,9 +13,8 @@ export default {
         merriweather: ["'Merriweather'", "serif"], 
         italianno: ["'Italianno'", "cursive"],
         odor: ["'Odor Mean Chey'", "sans-serif"], 
-        libre: ["'Libre Caslon Display'", "serif"], // New font added
-        gowun: ['"Gowun Batang"', 'serif'],
-        cormorant: ['"Cormorant"', 'serif'],
+        libre: ["'Libre Caslon Display'", "serif"],
+        noto: ["'Noto Serif'", "serif"], // ✅ Added Noto Serif font
       },
     },
   },
