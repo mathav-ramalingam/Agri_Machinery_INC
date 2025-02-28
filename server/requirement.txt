@@ -5,3 +5,4 @@ npm i mongoose
 npm i dotenv
 npm i cors
 npm install body-parser
+npm install multer

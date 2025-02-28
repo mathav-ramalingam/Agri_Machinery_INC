@@ -12,6 +12,8 @@ app.use(cors())
 
 app.use('/agri',router)
 
+app.use('/uploads', express.static('uploads'));
+
 mongoose.connect(process.env.MONGO_URL).then((result) => {
     console.log('connected to mongodb')
 }).catch((err)=>{

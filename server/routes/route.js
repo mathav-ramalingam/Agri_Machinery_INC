@@ -1,8 +1,12 @@
 const express = require('express');
-const router = express.Router()
-const productFun = require('../Controller/product.control.js')
+const { productFun, productList, upload } = require('../Controller/product.control.js')
 
-router.post('/prod',productFun)
+
+const router = express.Router()
+
+
+router.post('/add-product', upload.array('Product_images', 5), productFun);  // Accepts up to 5 image
+router.get('/products', productList);
 
 
 module.exports = router;
