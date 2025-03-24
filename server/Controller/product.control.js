@@ -16,6 +16,17 @@ const upload = multer({ storage: storage });
 
 const productFun = async (req, res) => {
   try {
+    // console.log("Request Body:", req.body);
+    // console.log("Uploaded Files:", req.files);
+    const dataele = req.files;
+    const imagedata = [];
+    dataele.forEach((element) => {
+      imagedata.push(element.filename);
+    });
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No images uploaded" });
+    }
+
     const {
       Product_Name,
       Product_Sub_Name,
@@ -24,14 +35,13 @@ const productFun = async (req, res) => {
       Description,
     } = req.body;
     // Get uploaded image file paths
-    const Product_images = req.files.map((file) => `/uploads/${file.filename}`);
-
+    console.log(imagedata);
     var product = new productModel({
-      Product_images,
+      Product_image: imagedata,
       Product_Name,
       Product_Sub_Name,
       Approx_price,
-      Product_Details,
+      Product_Details: Product_Details ? JSON.parse(Product_Details) : [],
       Description,
     });
 
@@ -57,4 +67,5 @@ const productList = async (req, res) => {
   }
 };
 
-module.exports = { productFun, productList, upload };
+
+module.exports = { productFun, productList,  upload };

@@ -11,8 +11,8 @@ const Navbar = () => {
 
       {/* Right Side: Navigation Links */}
       <div className="flex gap-16 text-2xl font-ledger">
-        <a href="#" className="hover:underline">Home</a>
-        <a href="#" className="hover:underline">Products</a>
+        <a href="/" className="hover:underline">Home</a>
+        <a href="/product" className="hover:underline">Products</a>
         <a href="#" className="hover:underline">Service Booking</a>
         <a href="#" className="hover:underline">Contact</a>
         <a href="#" className="hover:underline">About Us</a>
