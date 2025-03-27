@@ -11,3 +11,5 @@ npm i react-slick
 
 npm i react-router-dom
 npm i axios
+
+npm install react-icons

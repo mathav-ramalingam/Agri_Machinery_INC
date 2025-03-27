@@ -45,9 +45,9 @@ const Product = () => {
           />
           <div className="p-4">
             <h2 className="text-xl font-semibold mb-2">
-              {product.Product_Name}
+              {product.Product_Category}
             </h2>
-            <p className="text-gray-600 mb-4">{product.Product_Sub_Name}</p>
+            <p className="text-gray-600 mb-4">{product.Product_Description}</p>
             <button
               onClick={() => detailsfun(product)}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg inline-block hover:bg-blue-600"

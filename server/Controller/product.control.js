@@ -12,47 +12,70 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }).any();
 
-const productFun = async (req, res) => {
+const addProduct = async (req, res) => {
   try {
-    // console.log("Request Body:", req.body);
-    // console.log("Uploaded Files:", req.files);
-    const dataele = req.files;
-    const imagedata = [];
-    dataele.forEach((element) => {
-      imagedata.push(element.filename);
-    });
-    if (!req.files || req.files.length === 0) {
+    const {
+      Product_Number,
+      Product_Category,
+      Product_Description,
+      Brand_Name,
+      Product_Specification,
+      Accessories,
+    } = req.body;
+
+
+    // Parse Product_Specification if it's a string
+    let parsedSpecifications = [];
+    if (typeof Product_Specification === "string") {
+      try {
+        parsedSpecifications = JSON.parse(Product_Specification);
+      } catch (err) {
+        return res
+          .status(400)
+          .json({ message: "Invalid JSON in Product_Specification" });
+      }
+    } else {
+      parsedSpecifications = Product_Specification; // If it's already an object/array
+    }
+
+    // Extract product images
+    const productImages = req.files
+      .filter((file) => file.fieldname === "Product_image")
+      .map((file) => file.filename);
+
+    // Extract product brochures
+    const productBrochures = req.files
+      .filter((file) => file.fieldname === "Product_Broucher")
+      .map((file) => file.path);
+
+    if (!productImages.length) {
       return res.status(400).json({ message: "No images uploaded" });
     }
 
-    const {
-      Product_Name,
-      Product_Sub_Name,
-      Approx_price,
-      Product_Details,
-      Description,
-    } = req.body;
-    // Get uploaded image file paths
-    console.log(imagedata);
-    var product = new productModel({
-      Product_image: imagedata,
-      Product_Name,
-      Product_Sub_Name,
-      Approx_price,
-      Product_Details: Product_Details ? JSON.parse(Product_Details) : [],
-      Description,
+    const product = new productModel({
+      Product_Number,
+      Product_Category,
+      Product_Description,
+      Brand_Name,
+      Product_image: productImages,
+      Product_Broucher: productBrochures,
+      Product_Specification: parsedSpecifications,
+      Accessories: Accessories ? Accessories.split(",") : [],
     });
 
     await product.save();
-    console.log(`${Product_Name} added successfully`);
-    res
-      .status(200)
-      .json({ message: `${Product_Name} added successfully`, product });
+    console.log(`${Product_Category} added successfully`);
+    res.status(200).json({
+      message: `${Product_Category} added successfully`,
+      product,
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Error adding product");
+    console.error("Error adding product:", error);
+    res
+      .status(500)
+      .json({ message: "Error adding product", error: error.message });
   }
 };
 
@@ -67,5 +90,4 @@ const productList = async (req, res) => {
   }
 };
 
-
-module.exports = { productFun, productList,  upload };
+module.exports = { addProduct, productList, upload };
