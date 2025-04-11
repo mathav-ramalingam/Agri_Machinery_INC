@@ -3,11 +3,33 @@ const app = express()
 var cors = require('cors')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
+const session = require('express-session');
 const router = require('./routes/route.js')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors())
+// app.use(cors())
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  }));
+  
+  
+
+  app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }
+  }));
+  
+  
+  const bcrypt = require('bcrypt');
+  const User = require('./model/user.model.js');
+  bcrypt.hash('admin123', 10).then(hash => {
+    User.create({ email: 'admin@example.com', password: hash });
+  });
 
 
 app.use('/agri',router)
