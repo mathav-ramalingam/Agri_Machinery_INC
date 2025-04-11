@@ -21,7 +21,7 @@ export const ServiceBooking = () => {
         But we're working on something amazing just for you 💚
       </p>
 
-      {/* Back Button */}
+      {/* Back Button
       <div className="fixed bottom-6 left-6 z-50">
         <button
           onClick={() => window.history.back()}
@@ -29,7 +29,7 @@ export const ServiceBooking = () => {
         >
           Back to Home
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

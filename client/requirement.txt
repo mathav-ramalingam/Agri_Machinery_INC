@@ -13,3 +13,9 @@ npm i react-router-dom
 npm i axios
 
 npm install react-icons
+
+npm install react-toastify
+
+npm install framer-motion
+
+npm install lucide-react

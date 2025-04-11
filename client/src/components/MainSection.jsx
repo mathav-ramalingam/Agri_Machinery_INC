@@ -27,7 +27,7 @@ const MainSection = () => {
   return (
     <>
       {/* Full-Screen Image Slider */}
-      <div className="w-full h-[50vh] md:h-[75vh] lg:h-screen overflow-hidden">
+      <div className="w-full h-[50vh] md:h-[75vh] lg:h-[75vh] overflow-hidden">
         <Slider {...sliderSettings}>
           {images.map((src, index) => (
             <div key={index} className="w-full h-[50vh] md:h-[75vh] lg:h-screen">
