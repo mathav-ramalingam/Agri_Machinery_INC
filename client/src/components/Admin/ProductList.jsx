@@ -19,7 +19,7 @@ const ProductList = () => {
 
   const fetchProducts = () => {
     axios
-      .get("http://localhost:3000/agri/products")
+      .get("http://localhost:5000/agri/products")
       .then((res) => setProducts(res.data))
       .catch((err) => console.error(err));
   };
@@ -27,7 +27,7 @@ const ProductList = () => {
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       axios
-        .delete(`http://localhost:3000/agri/delete/${id}`)
+        .delete(`http://localhost:5000/agri/delete/${id}`)
         .then(() => fetchProducts())
         .catch((err) => console.error(err));
     }
@@ -55,7 +55,7 @@ const ProductList = () => {
       );
 
       await axios.put(
-        `http://localhost:3000/agri/edit/${editingProduct._id}`,
+        `http://localhost:5000/agri/edit/${editingProduct._id}`,
         form,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -143,7 +143,7 @@ const ProductList = () => {
               className="border shadow-md rounded-2xl bg-white overflow-hidden"
             >
               <img
-                src={`http://localhost:3000/uploads/${product.Product_image[0]}`}
+                src={`http://localhost:5000/uploads/${product.Product_image[0]}`}
                 alt={product.Product_Description}
                 className="w-full px-36 object-cover"
               />

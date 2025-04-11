@@ -94,7 +94,7 @@ const AddProduct = () => {
       }
 
       const res = await axios.post(
-        "http://localhost:3000/agri/add-product",
+        "http://localhost:5000/agri/add-product",
         formData,
         {
           headers: {

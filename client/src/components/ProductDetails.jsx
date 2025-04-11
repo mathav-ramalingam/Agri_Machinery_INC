@@ -36,7 +36,7 @@ const ProductDetail = () => {
         ],
       };
 
-      const res = await axios.post("http://localhost:3000/agri/userorder", payload);
+      const res = await axios.post("http://localhost:5000/agri/userorder", payload);
       if (res.status === 201) {
         alert("Order placed successfully!");
         setShowModal(false);
@@ -55,7 +55,7 @@ const ProductDetail = () => {
           {/* Left - Images */}
           <div className="md:col-span-1">
             <img
-              src={`http://localhost:3000/uploads/${data.Product_image[imageIndex]}`}
+              src={`http://localhost:5000/uploads/${data.Product_image[imageIndex]}`}
               alt="Product"
               className="w-full h-96 object-cover rounded-lg shadow-md"
             />
@@ -63,7 +63,7 @@ const ProductDetail = () => {
               {data.Product_image.map((img, index) => (
                 <img
                   key={index}
-                  src={`http://localhost:3000/uploads/${img}`}
+                  src={`http://localhost:5000/uploads/${img}`}
                   alt="Thumbnail"
                   className={`w-16 h-16 object-cover rounded-md cursor-pointer border-2 ${
                     index === imageIndex ? "border-green-600" : "border-gray-300"
@@ -85,7 +85,7 @@ const ProductDetail = () => {
             {data.Product_Broucher.length > 0 && (
               <div className="mt-4">
                 <a
-                  href={`http://localhost:3000/${data.Product_Broucher[0]}`}
+                  href={`http://localhost:5000/${data.Product_Broucher[0]}`}
                   download
                   className="flex items-center text-red-500 hover:underline"
                 >

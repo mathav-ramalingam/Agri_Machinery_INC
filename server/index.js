@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(cors())
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:5174',
     credentials: true,
   }));
   
@@ -43,6 +43,6 @@ mongoose.connect(process.env.MONGO_URL).then((result) => {
 })
 
 
-app.listen(3000, () =>{
-    console.log("server running")
+app.listen(process.env.PORT, () =>{
+    console.log(`server running ${process.env.PORT}`)
 })

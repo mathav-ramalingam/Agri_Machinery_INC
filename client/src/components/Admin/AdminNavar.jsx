@@ -12,7 +12,7 @@ export default function AdminNavbar() {
 
   const logout = async () => {
     try {
-      await axios.post('http://localhost:3000/agri/logout');
+      await axios.post('http://localhost:5000/agri/logout');
       toast.success("Logged out successfully ✌️");
       navigate('/');
     } catch (err) {

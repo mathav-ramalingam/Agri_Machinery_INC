@@ -20,7 +20,7 @@ export const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/agri/orders")
+    axios.get("http://localhost:5000/agri/orders")
       .then((res) => {
         setOrders(res.data);
       })
