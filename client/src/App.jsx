@@ -5,6 +5,8 @@ import Product from "./components/Product";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import ProductDetail from "./components/ProductDetails";
+import ContactUs from "./components/ContactUs";
+import { ServiceBooking } from "./components/ServiceBooking";
 
 function App() {
   return (
@@ -14,8 +16,10 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/product" element={<Product />} />
+          <Route path="/products" element={<Product />} />
           <Route path="/productsdetails" element={<ProductDetail />} />
+          <Route path="/servicebooking" element={<ServiceBooking />} />
+          <Route path="/contact" element={<ContactUs />} />
         </Routes>
       </BrowserRouter>
     </>

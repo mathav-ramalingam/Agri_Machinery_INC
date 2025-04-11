@@ -10,7 +10,7 @@ const Header = () => {
 
       {/* Title */}
       <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-green-700 text-center md:text-left">
-        AGRI Machinery INC
+        AGRI Machinery Mart
       </h1>
     </header>
   );
