@@ -4,10 +4,10 @@ import { MdProductionQuantityLimits } from "react-icons/md";
 import { MdOutlineQuestionMark } from "react-icons/md";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-import { loadStripe } from '@stripe/stripe-js';
+// import { loadStripe } from '@stripe/stripe-js';
 
 
-const stripePromise = loadStripe("YOUR_STRIPE_PUBLIC_KEY"); 
+// const stripePromise = loadStripe("pk_test_51RCvocRQVDLAjWwHJ8qOkFhD8jbWidZeBnDUXZZyWgcD1S43cK672j019xPNmttjcT387BWNl4KuuQypA2ZDyDEN00N7hfVfOA"); 
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -28,48 +28,105 @@ const ProductDetail = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  
 
-  const handleOrderSubmit = async () => {
-    try {
-      const payload = {
-        ...formData,
-        orderedProducts: [
-          {
-            productID: data._id,
-          },
-        ],
-      };
-
-      const orderRes = await axios.post("http://localhost:5000/agri/userorder", payload);
-
-      if (orderRes.status === 201) {
-        const stripe = await stripePromise;
-
-        const sessionRes = await axios.post("http://localhost:5000/agri/create-checkout-session", {
-          product: {
-            name: data.Product_Category,
-            description: data.Product_Description,
-            image: data.Product_image[0],
-            price: 10000, // price in paise/cents (i.e., ₹100.00)
-          },
-          customer: {
-            email: formData.email,
-          },
-        });
-
-        const result = await stripe.redirectToCheckout({
-          sessionId: sessionRes.data.sessionId,
-        });
-
-        if (result.error) {
-          alert(result.error.message);
+  const handleOrderSubmit = async (e) => {
+    e.preventDefault();
+  
+    const totalAmount = 10000; // example: ₹100 * 100 (paise), replace with your logic if needed
+  
+    const options = {
+      key: "rzp_test_4rdgre6savrrmw", // Replace with your Razorpay key
+      amount: totalAmount, // Amount in paise
+      currency: "INR",
+      name: "Agri Machinery Mart",
+      description: "Order Payment",
+      handler: async function (response) {
+        try {
+          // Save order details after successful payment
+          const payload = {
+            ...formData,
+            orderedProducts: [
+              {
+                productID: data._id,
+              },
+            ],
+            // You can also save Razorpay response details if needed
+            // razorpay_order_id: response.razorpay_order_id,
+            // razorpay_payment_id: response.razorpay_payment_id,
+            // razorpay_signature: response.razorpay_signature,
+          };
+  
+          const orderRes = await axios.post("http://localhost:5000/agri/userorder", payload);
+  
+          if (orderRes.status === 201) {
+            alert("Order placed successfully!");
+          } else {
+            alert("Payment succeeded, but order saving failed.");
+          }
+        } catch (error) {
+          console.error("Error saving order after payment:", error);
+          alert("Payment succeeded, but order saving failed. Please contact support.");
         }
-      }
-    } catch (error) {
-      console.error("Order error", error);
-      alert("Failed to place order");
-    }
+      },
+      prefill: {
+        name: formData.name,
+        email: formData.email,
+        contact: formData.phone, // assuming you have a phone in formData
+      },
+      theme: {
+        color: "#f37254",
+      },
+    };
+  
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   };
+  
+
+  // my code 
+
+  // const handleOrderSubmit = async () => {
+  //   try {
+  //     const payload = {
+  //       ...formData,
+  //       orderedProducts: [
+  //         {
+  //           productID: data._id,
+  //         },
+  //       ],
+  //     };
+
+  //     const orderRes = await axios.post("http://localhost:5000/agri/userorder", payload);
+
+  //     if (orderRes.status === 201) {
+  //       const stripe = await stripePromise;
+
+  //       const sessionRes = await axios.post("http://localhost:5000/agri/create-checkout-session", {
+  //         product: {
+  //           name: data.Product_Category,
+  //           description: data.Product_Description,
+  //           image: data.Product_image[0],
+  //           price: 10000, // price in paise/cents (i.e., ₹100.00)
+  //         },
+  //         customer: {
+  //           email: formData.email,
+  //         },
+  //       });
+
+  //       const result = await stripe.redirectToCheckout({
+  //         sessionId: sessionRes.data.sessionId,
+  //       });
+
+  //       if (result.error) {
+  //         alert(result.error.message);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Order error", error);
+  //     alert("Failed to place order");
+  //   }
+  // };
 
   return (
     <>
