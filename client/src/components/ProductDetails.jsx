@@ -4,6 +4,10 @@ import { MdProductionQuantityLimits } from "react-icons/md";
 import { MdOutlineQuestionMark } from "react-icons/md";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
+import { loadStripe } from '@stripe/stripe-js';
+
+
+const stripePromise = loadStripe("YOUR_STRIPE_PUBLIC_KEY"); 
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -36,10 +40,30 @@ const ProductDetail = () => {
         ],
       };
 
-      const res = await axios.post("http://localhost:5000/agri/userorder", payload);
-      if (res.status === 201) {
-        alert("Order placed successfully!");
-        setShowModal(false);
+      const orderRes = await axios.post("http://localhost:5000/agri/userorder", payload);
+
+      if (orderRes.status === 201) {
+        const stripe = await stripePromise;
+
+        const sessionRes = await axios.post("http://localhost:5000/agri/create-checkout-session", {
+          product: {
+            name: data.Product_Category,
+            description: data.Product_Description,
+            image: data.Product_image[0],
+            price: 10000, // price in paise/cents (i.e., ₹100.00)
+          },
+          customer: {
+            email: formData.email,
+          },
+        });
+
+        const result = await stripe.redirectToCheckout({
+          sessionId: sessionRes.data.sessionId,
+        });
+
+        if (result.error) {
+          alert(result.error.message);
+        }
       }
     } catch (error) {
       console.error("Order error", error);
@@ -143,6 +167,7 @@ const ProductDetail = () => {
       </div>
 
       {/* Animated Modal */}
+      {/* Payment Modal */}
       <AnimatePresence>
         {showModal && (
           <motion.div
@@ -164,9 +189,7 @@ const ProductDetail = () => {
               >
                 ✕
               </button>
-              <h2 className="text-2xl font-bold mb-4 text-green-700 text-center">
-                📦 Place Your Order
-              </h2>
+              <h2 className="text-2xl font-bold mb-4 text-green-700 text-center">📦 Place Your Order</h2>
 
               <div className="grid gap-4">
                 {["name", "email", "shippingaddress", "phone", "pincode"].map((field) => (
@@ -174,9 +197,7 @@ const ProductDetail = () => {
                     key={field}
                     type={field === "email" ? "email" : "text"}
                     name={field}
-                    placeholder={
-                      field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, " $1")
-                    }
+                    placeholder={field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, " $1")}
                     value={formData[field]}
                     onChange={handleChange}
                     className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
@@ -186,7 +207,7 @@ const ProductDetail = () => {
                   onClick={handleOrderSubmit}
                   className="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 font-semibold text-lg transition"
                 >
-                  ✅ Submit Order
+                  ✅ Submit Order & Pay
                 </button>
               </div>
             </motion.div>

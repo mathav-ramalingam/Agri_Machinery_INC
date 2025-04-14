@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(cors())
 
 app.use(cors({
-    origin: 'http://localhost:5174',
+    origin: 'http://localhost:5173',
     credentials: true,
   }));
   
@@ -41,6 +41,37 @@ mongoose.connect(process.env.MONGO_URL).then((result) => {
 }).catch((err)=>{
     console.error(err);
 })
+
+
+// Node.js + Express + Stripe
+app.post("agri/create-checkout-session", async (req, res) => {
+  const { product, customer } = req.body;
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: [
+      {
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: product.name,
+            description: product.description,
+            images: [`http://localhost:5000/uploads/${product.image}`],
+          },
+          unit_amount: product.price,
+        },
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    customer_email: customer.email,
+    success_url: "http://localhost:3000/success",
+    cancel_url: "http://localhost:3000/cancel",
+  });
+
+  res.send({ sessionId: session.id });
+});
+
 
 
 app.listen(process.env.PORT, () =>{
