@@ -15,6 +15,7 @@ import ProductList from "./components/Admin/ProductList";
 import AddProduct from "./components/Admin/AddProduct";
 import { ViewOrders } from "./components/Admin/ViewOrders";
 import { ViewRequests } from "./components/Admin/ViewRequests"
+import { AboutUs } from "./components/AboutUs";
 
 function Layout() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function Layout() {
         <Route path="/productsdetails" element={<ProductDetail />} />
         <Route path="/servicebooking" element={<ServiceBooking />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/aboutus" element={<AboutUs />} />
 
         
         <Route path="/login" element={<Login />} />
