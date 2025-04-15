@@ -48,6 +48,13 @@ export const ViewOrders = () => {
               <p><span className="font-medium">Email:</span> {order.email}</p>
               <p><span className="font-medium">Phone:</span> {order.phone}</p>
               <p><span className="font-medium">Address:</span> {order.shippingaddress}, {order.pincode}</p>
+              <p><span className="font-medium">Payment Id:</span> {order.razorpay_payment_id}</p>
+              {order.razorpay_payment_id ? (
+              <p className="text-lg text-green-600 font-semibold">✅ Payment Successful</p>
+              ) : (
+              <p className="text-lg text-red-600 font-semibold">❌ Payment Not Completed</p>
+              )}
+
 
               <div className="mt-4">
                 <h3 className="font-bold text-gray-700 mb-2">Ordered Products:</h3>
@@ -58,6 +65,7 @@ export const ViewOrders = () => {
                     <p><span className="font-medium">Category:</span> {item.productID?.Product_Category || "N/A"}</p>
                     <p><span className="font-medium">Description:</span> {item.productID?.Product_Description || "N/A"}</p>
                     <p><span className="font-medium">Ordered At:</span> {new Date(item.orderedAt).toLocaleString()}</p>
+                    
                   </div>
                 ))}
               </div>

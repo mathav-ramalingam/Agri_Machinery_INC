@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { MdProductionQuantityLimits } from "react-icons/md";
-import { MdOutlineQuestionMark } from "react-icons/md";
+import { MdProductionQuantityLimits, MdOutlineQuestionMark } from "react-icons/md";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-// import { loadStripe } from '@stripe/stripe-js';
-
-
-// const stripePromise = loadStripe("pk_test_51RCvocRQVDLAjWwHJ8qOkFhD8jbWidZeBnDUXZZyWgcD1S43cK672j019xPNmttjcT387BWNl4KuuQypA2ZDyDEN00N7hfVfOA"); 
 
 const ProductDetail = () => {
   const location = useLocation();
   const [imageIndex, setImageIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("PAY_NOW");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -28,112 +24,85 @@ const ProductDetail = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
 
   const handleOrderSubmit = async (e) => {
     e.preventDefault();
-  
-    const totalAmount = 10000; // example: ₹100 * 100 (paise), replace with your logic if needed
-  
-    const options = {
-      key: "rzp_test_4rdgre6savrrmw", // Replace with your Razorpay key
-      amount: totalAmount, // Amount in paise
-      currency: "INR",
-      name: "Agri Machinery Mart",
-      description: "Order Payment",
-      handler: async function (response) {
-        try {
-          // Save order details after successful payment
-          const payload = {
-            ...formData,
-            orderedProducts: [
-              {
-                productID: data._id,
-              },
-            ],
-            // You can also save Razorpay response details if needed
-            // razorpay_order_id: response.razorpay_order_id,
-            // razorpay_payment_id: response.razorpay_payment_id,
-            // razorpay_signature: response.razorpay_signature,
-          };
-  
-          const orderRes = await axios.post("http://localhost:5000/agri/userorder", payload);
-  
-          if (orderRes.status === 201) {
-            alert("Order placed successfully!");
-          } else {
-            alert("Payment succeeded, but order saving failed.");
-          }
-        } catch (error) {
-          console.error("Error saving order after payment:", error);
-          alert("Payment succeeded, but order saving failed. Please contact support.");
-        }
-      },
-      prefill: {
-        name: formData.name,
-        email: formData.email,
-        contact: formData.phone, // assuming you have a phone in formData
-      },
-      theme: {
-        color: "#f37254",
-      },
+
+    const payload = {
+      ...formData,
+      orderedProducts: [{ productID: data._id }],
     };
-  
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+
+    if (paymentMethod === "PAY_NOW") {
+      const totalAmount = 10000; // e.g. ₹100 * 100 (paise)
+
+      const options = {
+        key: "rzp_test_4rdgre6savrrmw", // Replace with your Razorpay Key
+        amount: totalAmount,
+        currency: "INR",
+        name: "Agri Machinery Mart",
+        description: "Order Payment",
+        handler: async function (response) {
+          try {
+            const finalPayload = {
+              ...payload,
+              razorpay_payment_id: response.razorpay_payment_id,
+            };
+
+            const orderRes = await axios.post("http://localhost:5000/agri/userorder", finalPayload);
+
+            if (orderRes.status === 201) {
+              await axios.post("http://localhost:5000/agri/send-sms", {
+                name: formData.name,
+                phone: formData.phone,
+                message: `Payment successful! Order confirmed. Payment ID: ${response.razorpay_payment_id}`,
+                payment_id: response.razorpay_payment_id,
+              });
+              alert("Order placed successfully & SMS sent!");
+            } else {
+              alert("Payment succeeded, but order saving failed.");
+            }
+          } catch (error) {
+            console.error("Error saving order after payment:", error);
+            alert("Payment succeeded, but order saving failed. Please contact support.");
+          }
+        },
+        prefill: {
+          name: formData.name,
+          email: formData.email,
+          contact: formData.phone,
+        },
+        theme: { color: "#f37254" },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } else {
+      try {
+        const orderRes = await axios.post("http://localhost:5000/agri/userorder", payload);
+        if (orderRes.status === 201) {
+          await axios.post("http://localhost:5000/agri/send-sms", {
+            name: formData.name,
+            phone: formData.phone,
+            message: `Order placed successfully! Your items will be delivered soon.`,
+            payment_id: 0,
+          });
+          alert("Order placed successfully with Cash on Delivery & SMS sent!");
+          setShowModal(false);
+        } else {
+          alert("Order saving failed. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error placing COD order:", error);
+        alert("Order placement failed. Please contact support.");
+      }
+    }
   };
-  
-
-  // my code 
-
-  // const handleOrderSubmit = async () => {
-  //   try {
-  //     const payload = {
-  //       ...formData,
-  //       orderedProducts: [
-  //         {
-  //           productID: data._id,
-  //         },
-  //       ],
-  //     };
-
-  //     const orderRes = await axios.post("http://localhost:5000/agri/userorder", payload);
-
-  //     if (orderRes.status === 201) {
-  //       const stripe = await stripePromise;
-
-  //       const sessionRes = await axios.post("http://localhost:5000/agri/create-checkout-session", {
-  //         product: {
-  //           name: data.Product_Category,
-  //           description: data.Product_Description,
-  //           image: data.Product_image[0],
-  //           price: 10000, // price in paise/cents (i.e., ₹100.00)
-  //         },
-  //         customer: {
-  //           email: formData.email,
-  //         },
-  //       });
-
-  //       const result = await stripe.redirectToCheckout({
-  //         sessionId: sessionRes.data.sessionId,
-  //       });
-
-  //       if (result.error) {
-  //         alert(result.error.message);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Order error", error);
-  //     alert("Failed to place order");
-  //   }
-  // };
 
   return (
     <>
-      {/* Background content with blur when modal is open */}
-      <div className={`max-w-6xl mx-auto p-6 ${showModal ? 'blur-sm pointer-events-none select-none' : ''}`}>
+      <div className={`max-w-6xl mx-auto p-6 ${showModal ? "blur-sm pointer-events-none select-none" : ""}`}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Left - Images */}
           <div className="md:col-span-1">
             <img
               src={`http://localhost:5000/uploads/${data.Product_image[imageIndex]}`}
@@ -155,7 +124,6 @@ const ProductDetail = () => {
             </div>
           </div>
 
-          {/* Right - Details */}
           <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-lg">
             <h1 className="text-2xl font-semibold text-green-700">{data.Product_Category}</h1>
             <p className="text-gray-600 mt-2">{data.Product_Description}</p>
@@ -194,10 +162,7 @@ const ProductDetail = () => {
                 <h2 className="text-xl font-semibold mb-2">Accessories:</h2>
                 <div className="flex flex-wrap gap-3">
                   {data.Accessories.map((item, index) => (
-                    <div
-                      key={index}
-                      className="bg-green-100 text-green-800 px-4 py-2 rounded-xl shadow-sm"
-                    >
+                    <div key={index} className="bg-green-100 text-green-800 px-4 py-2 rounded-xl shadow-sm">
                       {item}
                     </div>
                   ))}
@@ -223,8 +188,6 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {/* Animated Modal */}
-      {/* Payment Modal */}
       <AnimatePresence>
         {showModal && (
           <motion.div
@@ -260,38 +223,42 @@ const ProductDetail = () => {
                     className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
                   />
                 ))}
+
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="PAY_NOW"
+                      checked={paymentMethod === "PAY_NOW"}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    <span>Pay Now</span>
+                  </label>
+
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="COD"
+                      checked={paymentMethod === "COD"}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    <span>Cash on Delivery</span>
+                  </label>
+                </div>
+
                 <button
                   onClick={handleOrderSubmit}
                   className="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 font-semibold text-lg transition"
                 >
-                  ✅ Submit Order & Pay
+                  ✅ Submit Order
                 </button>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Floating Buttons
-      <div className="fixed bottom-6 left-6 z-50">
-        <button
-          onClick={() => window.history.back()}
-          className="bg-gradient-to-r from-green-700 to-green-700 hover:from-green-700 hover:to-green-700 text-white p-2 rounded-full shadow-xl font-semibold tracking-wide transition-all duration-300 hover:scale-110 animate-pulse"
-          title="Back to Products"
-        >
-          <MdProductionQuantityLimits className="size-8" />
-        </button>
-      </div>
-
-      <div className="fixed bottom-6 right-6 z-50">
-        <button
-          onClick={() => (window.location.href = "/about")}
-          className="bg-gradient-to-r from-blue-800 to-black hover:from-blue-500 hover:to-black text-white p-2 rounded-full  shadow-xl font-semibold tracking-wide transition-all duration-300 hover:scale-110 animate-pulse"
-          title="About This Product"
-        >
-          <MdOutlineQuestionMark  className="size-8"/>
-        </button>
-      </div> */}
     </>
   );
 };

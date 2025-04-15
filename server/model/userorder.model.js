@@ -35,8 +35,12 @@ const UserOrderSchema = new mongoose.Schema(
         }
       }
     ],
+    razorpay_payment_id:{
+      type: String,
+    }
   },
   { timestamps: true }
+
 );
 
 const userorderModel = mongoose.model("userorder", UserOrderSchema);

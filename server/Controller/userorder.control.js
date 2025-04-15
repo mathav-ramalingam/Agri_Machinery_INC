@@ -4,7 +4,7 @@ const userorderModel = require("../model/userorder.model.js");
 // Create a new order (user + product details)
 const userOrder = async (req, res) => {
   try {
-    const { name, email, shippingaddress, phone, pincode, orderedProducts } =
+    const { name, email, shippingaddress, phone, pincode, orderedProducts, razorpay_payment_id } =
       req.body;
 
     if (
@@ -25,6 +25,7 @@ const userOrder = async (req, res) => {
       phone,
       pincode,
       orderedProducts,
+      razorpay_payment_id,
     });
 
     const saved = await newUserOrder.save();
