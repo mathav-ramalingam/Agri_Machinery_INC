@@ -17,7 +17,7 @@ const Footer = () => (
                 </div>
                 <div className="w-full md:w-1/4 mb-4">
                     <h5 className="font-bold mb-2">Categories</h5>
-                    <p>Autumn, Winter, Spring, Summer</p>
+                    <p>Fogger , Chain Saw, Harvester, Pumset</p>
                 </div>
                 <div className="w-full md:w-1/4 mb-4">
                     <h5 className="font-bold mb-2">Styles</h5>
@@ -25,7 +25,7 @@ const Footer = () => (
                 </div>
                 <div className="w-full md:w-1/4 mb-4">
                 <h5 className="font-bold mb-2">Contact Us</h5>
-                    <p>Email: kumartextile@gmail.com</p>
+                    <p>Email: agrimachineryinc@gmail.com</p>
                     <p>Contact: +91 9566308639</p>
                 </div>
             </div>
