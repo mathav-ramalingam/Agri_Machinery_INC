@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FiSearch } from "react-icons/fi";
+import { BASE_URL } from "./api/config.js";
 
 const Product = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Product = () => {
   // Fetch product data
   useEffect(() => {
     axios
-      .get("http://localhost:5000/agri/products")
+      .get(`${BASE_URL}/agri/products`)
       .then((response) => {
         setProducts(response.data);
         setFilteredProducts(response.data);
@@ -110,7 +111,7 @@ const Product = () => {
             className="rounded-2xl border border-transparent shadow-lg hover:border-green-400 hover:border-3 hover:shadow-2xl hover:scale-[1.03] transition-all duration-300 ease-in-out bg-white overflow-hidden"
           >
             <img
-              src={`http://localhost:5000/uploads/${product.Product_image[0]}`}
+              src={`${BASE_URL}/uploads/${product.Product_image[0]}`}
               alt={product.Product_Name}
               className="w-full aspect-square p-4 object-cover"
             />

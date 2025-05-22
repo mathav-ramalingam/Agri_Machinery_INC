@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BASE_URL } from "../api/config.js";
 
 axios.defaults.withCredentials = true;
 
@@ -15,7 +16,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/agri/login', { email, password });
+      await axios.post(`${BASE_URL}/agri/login`, { email, password });
       toast.success('Login successful ✨');
       navigate('/admin');
     } catch (err) {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AdminNavbar from "../Admin/AdminNavar";
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { BASE_URL } from "../api/config.js";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 50 },
@@ -20,7 +21,7 @@ export const ViewOrders = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/agri/orders")
+    axios.get(`${BASE_URL}/agri/orders`)
       .then((res) => {
         setOrders(res.data);
       })

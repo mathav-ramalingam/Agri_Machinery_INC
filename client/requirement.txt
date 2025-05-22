@@ -20,3 +20,6 @@ npm install framer-motion
 
 npm install lucide-react
 
+npm install jspdf html2canvas
+
+npm install jspdf-autotable

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../api/config.js";
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -94,7 +95,7 @@ const AddProduct = () => {
       }
 
       const res = await axios.post(
-        "http://localhost:5000/agri/add-product",
+        `${BASE_URL}/agri/add-product`,
         formData,
         {
           headers: {
