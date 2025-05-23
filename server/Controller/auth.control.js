@@ -35,4 +35,4 @@ const logout =  (req, res) => {
 //   }
 // };
 
-module.exports = {adminlogin, logout, authcheck};
+module.exports = {adminlogin, logout};
