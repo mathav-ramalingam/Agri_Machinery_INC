@@ -27,12 +27,12 @@ const logout =  (req, res) => {
 };
 
 // Auth check
-const authcheck = (req, res) => {
-  if (req.session.user) {
-    res.json({ user: req.session.user });
-  } else {
-    res.status(401).json({ message: "Unauthorized" });
-  }
-};
+// const authcheck = (req, res) => {
+//   if (req.session.user) {
+//     res.json({ user: req.session.user });
+//   } else {
+//     res.status(401).json({ message: "Unauthorized" });
+//   }
+// };
 
 module.exports = {adminlogin, logout, authcheck};

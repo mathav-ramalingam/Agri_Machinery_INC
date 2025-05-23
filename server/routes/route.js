@@ -13,7 +13,7 @@ router.get("/products", productList);
 
 router.post("/login",adminlogin);
 router.post("/logout",logout);
-router.get("/me",authcheck);
+// router.get("/me",authcheck);
 
 
 router.post("/userorder",userOrder);
