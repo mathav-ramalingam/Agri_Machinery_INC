@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IoMdLogOut } from 'react-icons/io';
 import { FiMenu, FiX } from 'react-icons/fi';
+import { BASE_URL } from "../api/config.js";
 
 export default function AdminNavbar() {
   const navigate = useNavigate();

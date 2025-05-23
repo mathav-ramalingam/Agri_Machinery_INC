@@ -16,6 +16,7 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      console.log("gii")
       await axios.post(`${BASE_URL}/agri/login`, { email, password });
       toast.success('Login successful ✨');
       navigate('/admin');
